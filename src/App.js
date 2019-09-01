@@ -8,7 +8,7 @@ class App extends Component {
     super(props);
     this.state = {
       data: [],
-      yName: 'y1'
+      yName: 'temperature'
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   handleClick(e) {
-    this.setState({ yName: e.target.value });
+    this.setState({ yName: e.target.id });
   }
 
   render() {
@@ -26,11 +26,11 @@ class App extends Component {
       <div className="App">
         <div className="select-data">
           <div>
-            <input onClick={this.handleClick} type="radio" id="temperature" name="data" value="y1" />
+            <input onClick={this.handleClick} type="radio" id="temperature" name="data" />
             <label for="temperature">Temperature</label>
           </div>
           <div>
-            <input onClick={this.handleClick} type="radio" id="humidity" name="data" value="y2" />
+            <input onClick={this.handleClick} type="radio" id="humidity" name="data" />
             <label for="humidity">Humidity</label>
           </div>
         </div>
