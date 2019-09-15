@@ -25,8 +25,8 @@ class LineChart extends Component {
       .domain(chart.xDomain)
       .range([0, chart.width]);
     chart.xAxis = d3.axisBottom(chart.xScale).tickFormat(d3.timeFormat('%d.%m'));
-    chart.yName = this.props.yName;
-    chart.yData = chart.data.map(d => d[chart.yName]);
+    chart.series = this.props.series;
+    chart.yData = chart.data.map(d => d[chart.series]);
     chart.yDomain = getDomain(chart.yData);
     chart.yScale = d3.scaleLinear()
       .domain(chart.yDomain)
@@ -34,7 +34,7 @@ class LineChart extends Component {
     chart.yAxis = d3.axisLeft(chart.yScale);
     chart.line = d3.line()
       .x(d => chart.xScale(d.x))
-      .y(d => chart.yScale(d[chart.yName]))
+      .y(d => chart.yScale(d[chart.series]))
       .curve(d3.curveMonotoneX);
     
     return chart;
@@ -67,7 +67,7 @@ class LineChart extends Component {
       .enter().append("circle")
       .attr("class", "dot")
       .attr("cx", d => chart.xScale(new Date(d.x)))
-      .attr("cy", d => chart.yScale(d[chart.yName]))
+      .attr("cy", d => chart.yScale(d[chart.series]))
       .attr("r", 4)
       .on("mouseover", function(a, b, c) {
         console.log(a)
