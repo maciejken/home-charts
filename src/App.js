@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import axios from 'axios';
+import { LineChart } from './components';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      yName: 'temperature'
+    };
+    this.handleClick = this.handleClick.bind(this);
+  }
+  async componentDidMount() {
+    var response = await axios.get('/sensors/dht22/hourly');
+    this.setState({ data: response.data });
+  }
+
+  handleClick(e) {
+    this.setState({ yName: e.target.id });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <div className="select-data">
+          <div>
+            <input onClick={this.handleClick} type="radio" id="temperature" name="data" />
+            <label for="temperature">Temperature</label>
+          </div>
+          <div>
+            <input onClick={this.handleClick} type="radio" id="humidity" name="data" />
+            <label for="humidity">Humidity</label>
+          </div>
+        </div>
+        <LineChart data={this.state.data} yName={this.state.yName} />
+      </div>
+    );    
+  }
+
 }
 
 export default App;
