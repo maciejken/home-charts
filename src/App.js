@@ -41,27 +41,24 @@ class App extends Component {
     this.updateState({ data });
   }
 
-  handleChange(e) {
+  async handleChange(e) {
     var { id, name } = e.target;
     var update = {};
     update[name] = id;
-    this.updateState(update);
+    await this.updateState(update);
   }
 
   getAllowedTimeframes(datatype) {
     var allowedIds = getAllowedTimeframeIds(datatype);
-    return this.timeframes.filter(timeframe =>
-      allowedIds.some(allowedId =>
-        timeframe.id === allowedId
-      )
-    );
+    return this.timeframes.filter(timeframe => allowedIds.includes(timeframe.id));
   }
 
   async updateState(update) {
-    var { datatype, timeframe } = this.state;
+    var { datatype } = this.state;
     if (update.datatype) {
-      update.data = await this.getData(update.datatype, timeframe);
       update.allowedTimeframes = this.getAllowedTimeframes(update.datatype);
+      update.timeframe = update.allowedTimeframes[0].id;
+      update.data = await this.getData(update.datatype, update.timeframe);
     } else if (update.timeframe) {
       update.data = await this.getData(datatype, update.timeframe);
     }
@@ -74,25 +71,32 @@ class App extends Component {
   }
 
   render() {
-    var { allowedTimeframes, data, dataset } = this.state;
+    var {
+      allowedTimeframes,
+      data,
+      dataset,
+      datatype,
+      timeframe
+    } = this.state;
+
     return (
       <div className="App">
         <div className="chart-controls">
           <RadioGroup
             name="datatype"
-            defaultId="hourly-average"
+            value={datatype}
             onChange={this.handleChange}
             buttons={this.datatypes}
           />
           <RadioGroup
             name="timeframe"
-            defaultId="weekly"
+            value={timeframe}
             onChange={this.handleChange}
             buttons={allowedTimeframes}
           />
           <RadioGroup
             name="dataset"
-            defaultId="temperature"
+            defaultValue={dataset}
             onChange={this.handleChange}
             buttons={this.datasets}
           />

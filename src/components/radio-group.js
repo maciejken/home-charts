@@ -1,7 +1,7 @@
 import React from "react";
 import "./radio-group.css";
 
-function RadioGroup({ buttons, name, onChange, defaultId }) {
+function RadioGroup({ buttons, name, onChange, defaultValue }) {
     return (
       <div className="radio-group">
         {
@@ -12,7 +12,6 @@ function RadioGroup({ buttons, name, onChange, defaultId }) {
               label={button.label}
               name={name}
               onClick={onChange}
-              checked={button.id === defaultId}
             />
           )
         }
@@ -20,10 +19,10 @@ function RadioGroup({ buttons, name, onChange, defaultId }) {
     );
 }
 
-function RadioInput({ checked, id, label, name, onClick }) {
+function RadioInput({ id, label, name, onClick }) {
   return (
       <div className="radio-input">
-        <input onClick={onClick} type="radio" id={id} name={name} checked={checked} />
+        <input onClick={onClick} type="radio" id={id} name={name} />
         <label for={id}>{label}</label>
       </div>
   );
