@@ -1,28 +1,30 @@
 import React from "react";
 import "./radio-group.css";
 
-function RadioGroup({ buttons, name, onChange, defaultValue }) {
-    return (
-      <div className="radio-group">
-        {
-          buttons.map((button) =>
-            <RadioInput
-              key={button.id}
-              id={button.id}
-              label={button.label}
-              name={name}
-              onClick={onChange}
-            />
-          )
-        }
-      </div>
-    );
+function RadioGroup({ buttons, name, onChange, value }) {
+  return (
+    <div className="radio-group">
+      {
+        buttons.map((button) =>
+          <RadioInput
+            key={button.id}
+            id={button.id}
+            value={button.value}
+            label={button.label}
+            name={name}
+            onClick={onChange}
+            checked={button.value === value}
+          />
+        )
+      }
+    </div>
+  );
 }
 
-function RadioInput({ id, label, name, onClick }) {
+function RadioInput({ id, checked, label, name, onClick, value }) {
   return (
-      <div className="radio-input">
-        <input onClick={onClick} type="radio" id={id} name={name} />
+      <div className={`radio-input ${checked ? 'checked' : ''}`}>
+        <input onClick={onClick} type="radio" id={id} value={value} name={name} />
         <label for={id}>{label}</label>
       </div>
   );

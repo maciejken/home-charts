@@ -1,0 +1,40 @@
+.radio-group {
+  background-color: #fff;
+}
+
+.radio-input input {
+  display: none;
+}
+
+.radio-input {
+  background-color: #999;
+  margin: 1px;
+  padding: 5px 10px;
+  height: 24px;
+}
+
+.radio-input, .radio-input label {
+  cursor: pointer;
+}
+
+.radio-input label {
+  color: #555;
+  height: 24px;
+  line-height: 24px;
+  font-size: 18px;
+  font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
+}
+
+.radio-input.checked {
+  background-color: #f06;
+  box-shadow: 0 0 7px #f06;
+}
+
+.radio-input.checked label {
+  color: rgb(253, 232, 241);
+  text-shadow: 0 0 3px rgb(253, 232, 241);
+}
+
+.radio-group {
+  display: flex;
+}

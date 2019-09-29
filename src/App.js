@@ -5,120 +5,89 @@ import { RadioGroup } from './components';
 import './App.css';
 
 class App extends Component {
-  datatypes = [
-    { id: "direct-measurement", label: "Direct measurement" },
-    { id: "hourly-average", label: "Hourly average" },
-    { id: "daily-average", label: "Daily average" }
+  measurements = [
+    { id: "measurement-temperature", label: "Temperature C", value: "temperature" },
+    { id: "measurement-humidity", label: "Humidity %", value: "humidity" }
   ];
-  timeframes = [
-    { id: "hourly", label: "Last hour" },
-    { id: "daily", label: "Last day" },
-    { id: "weekly", label: "Last week" },
-    { id: "monthly", label: "Last month" },
-    { id: "yearly", label: "Last year" }
+  periods = [
+    { id: "period-1d", label: "1 day", value: "1d" },
+    { id: "period-7d", label: "1 week", value: "7d" },
+    { id: "period-30d", label: "1 month", value: "30d" },
+    { id: "period-365d", label: "1 year", value: "365d" }
   ];
-  datasets = [
-    { id: "temperature", label: "Temperature C" },
-    { id: "humidity", label: "Humidity %" }
+  durations = [
+    { id: "duration-10m", label: "10 min", value: "10m" },
+    { id: "duration-1h", label: "1 hour", value: "1h" },
+    { id: "duration-1d", label: "1 day", value: "1d" }
   ];
   constructor(props) {
     super(props);
-    const datatype = "hourly-average";
-    const allowedTimeframes = this.getAllowedTimeframes(datatype);
     this.state = {
       data: [],
-      datatype,
-      timeframe: "weekly",
-      allowedTimeframes,
-      dataset: "temperature"
+      measurement: "temperature",
+      period: "7d",
+      duration: "1h"
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
   async componentDidMount() {
-    var { datatype, timeframe } = this.state;
-    var data = await this.getData(datatype, timeframe);
-    this.updateState({ data });
+    await this.updateState({...this.state});
   }
 
   async handleChange(e) {
-    var { id, name } = e.target;
+    var { name, value } = e.target;
     var update = {};
-    update[name] = id;
+    update[name] = value;
     await this.updateState(update);
   }
 
-  getAllowedTimeframes(datatype) {
-    var allowedIds = getAllowedTimeframeIds(datatype);
-    return this.timeframes.filter(timeframe => allowedIds.includes(timeframe.id));
-  }
-
   async updateState(update) {
-    var { datatype } = this.state;
-    if (update.datatype) {
-      update.allowedTimeframes = this.getAllowedTimeframes(update.datatype);
-      update.timeframe = update.allowedTimeframes[0].id;
-      update.data = await this.getData(update.datatype, update.timeframe);
-    } else if (update.timeframe) {
-      update.data = await this.getData(datatype, update.timeframe);
+    try {
+      update.data = await this.getData(update);
+      this.setState({...update});
+    } catch (err) {
+      throw new Error(`Unable to update app state: ${err}`);
     }
-    this.setState({...update});
   }
 
-  async getData(datatype, timeframe) {
-    var response = await axios.get(`/sensors/dht22/${datatype}s/${timeframe}`);
+  async getData(params) {
+    const { measurement, period, duration } = {...this.state, ...params};
+    const uri = `/api/${measurement}?period=${period}&duration=${duration}`;
+    var response = await axios.get(uri);
     return response.data;
   }
 
   render() {
-    var {
-      allowedTimeframes,
-      data,
-      dataset,
-      datatype,
-      timeframe
-    } = this.state;
+    var { data, duration, measurement, period } = this.state;
 
     return (
       <div className="App">
         <div className="chart-controls">
           <RadioGroup
-            name="datatype"
-            value={datatype}
+            name="measurement"
+            value={measurement}
             onChange={this.handleChange}
-            buttons={this.datatypes}
+            buttons={this.measurements}
           />
           <RadioGroup
-            name="timeframe"
-            value={timeframe}
+            name="period"
+            value={period}
             onChange={this.handleChange}
-            buttons={allowedTimeframes}
+            buttons={this.periods}
           />
           <RadioGroup
-            name="dataset"
-            defaultValue={dataset}
+            name="duration"
+            value={duration}
             onChange={this.handleChange}
-            buttons={this.datasets}
+            buttons={this.durations}
           />
         </div>
-        <LineChart data={data} series={dataset} />
+        <LineChart data={data} series={measurement} />
       </div>
     );    
   }
 
-}
-
-function getAllowedTimeframeIds(datatype) {
-  switch (datatype) {
-    case "direct-measurement":
-      return ["hourly", "daily"];
-    case "hourly-average":
-      return ["daily", "weekly"];
-    case "daily-average":
-      return ["weekly", "monthly", "yearly"];
-    default:
-      throw new Error(`Unsupported data type: ${datatype}`);
-  }
 }
 
 export default App;
