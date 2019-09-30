@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { LineChart } from './components';
 import { RadioGroup } from './components';
+import './reset.css';
 import './App.css';
 
 class App extends Component {
@@ -47,7 +48,7 @@ class App extends Component {
       update.data = await this.getData(update);
       this.setState({...update});
     } catch (err) {
-      throw new Error(`Unable to update app state: ${err}`);
+      // throw new Error(`Unable to update app state: ${err}`);
     }
   }
 

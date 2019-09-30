@@ -1,16 +1,26 @@
 .radio-group {
   background-color: #fff;
+  border: 1px solid #f06;
 }
 
 .radio-input input {
   display: none;
 }
 
+.radio-label {
+  padding: 10px;
+  font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
+  font-weight: bold;
+  color: #f06;
+}
+
 .radio-input {
-  background-color: #999;
-  margin: 1px;
-  padding: 5px 10px;
-  height: 24px;
+  background-color: rgba(255, 0, 102, 0.158);
+  padding: 9px 0;
+}
+
+.radio-input:not(:last-child) {
+  margin: 0 1px;
 }
 
 .radio-input, .radio-input label {
@@ -18,10 +28,8 @@
 }
 
 .radio-input label {
-  color: #555;
-  height: 24px;
-  line-height: 24px;
-  font-size: 18px;
+  color: rgba(255, 0, 102, 0.74);
+  padding: 0 10px;
   font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
 }
 

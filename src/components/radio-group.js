@@ -4,6 +4,9 @@ import "./radio-group.css";
 function RadioGroup({ buttons, name, onChange, value }) {
   return (
     <div className="radio-group">
+      <div className="radio-label">
+        {name.toUpperCase()}
+      </div>
       {
         buttons.map((button) =>
           <RadioInput
