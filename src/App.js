@@ -84,7 +84,7 @@ class App extends Component {
             buttons={this.durations}
           />
         </div>
-        <LineChart data={data} series={measurement} />
+        <LineChart data={data} />
       </div>
     );    
   }
