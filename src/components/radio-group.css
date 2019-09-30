@@ -1,0 +1,48 @@
+.radio-group {
+  background-color: #fff;
+  border: 1px solid #f06;
+}
+
+.radio-input input {
+  display: none;
+}
+
+.radio-label {
+  padding: 10px;
+  font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
+  font-weight: bold;
+  color: #f06;
+}
+
+.radio-input {
+  background-color: rgba(255, 0, 102, 0.158);
+  padding: 9px 0;
+}
+
+.radio-input:not(:last-child) {
+  margin: 0 1px;
+}
+
+.radio-input, .radio-input label {
+  cursor: pointer;
+}
+
+.radio-input label {
+  color: rgba(255, 0, 102, 0.74);
+  padding: 0 10px;
+  font-family: Calibri, Candara, Segoe, Segoe UI, Optima, Arial, sans-serif;
+}
+
+.radio-input.checked {
+  background-color: #f06;
+  box-shadow: 0 0 7px #f06;
+}
+
+.radio-input.checked label {
+  color: rgb(253, 232, 241);
+  text-shadow: 0 0 3px rgb(253, 232, 241);
+}
+
+.radio-group {
+  display: flex;
+}
