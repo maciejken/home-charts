@@ -48,7 +48,7 @@ class App extends Component {
       update.data = await this.getData(update);
       this.setState({...update});
     } catch (err) {
-      // throw new Error(`Unable to update app state: ${err}`);
+      console.error(new Error(`Unable to update app state: ${err}`));
     }
   }
 
